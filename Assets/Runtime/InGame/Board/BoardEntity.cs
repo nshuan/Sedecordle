@@ -13,32 +13,46 @@ namespace Runtime.InGame.Board
         private BoardLineEntity[] _lineEntities;
         private int _currentLine = 0;
         
+        public KeyWord Target { get; set; }
+        
         private void Awake()
         {
             _lineCreator = GetComponent<BoardLineCreator>();
         }
 
-        private void Start()
+        public void BuildBoard(int numberOfLetter)
         {
-            _lineEntities = _lineCreator.CreateLines(17);
+            _lineEntities = _lineCreator.CreateLines(numberOfLetter);
         }
 
-        private void OnEnable()
+        public void SetTarget(string target)
         {
-            InputManager.OnLetterPressed += OnLetterPressed;
+            Target = target.ToKeyWord();
         }
-
-        private void OnDisable()
-        {
-            InputManager.OnLetterPressed -= OnLetterPressed;
-        }
-
-        private void OnLetterPressed(KeyCode key)
+        
+        public void Write(KeyCode key)
         {
             if (_lineEntities == null) return;
+            if (_lineEntities.Length == 0) return;
             if (_currentLine >= _lineEntities.Length) return;
             
             _lineEntities[_currentLine].Write(key);
+        }
+
+        public void Backspace()
+        {
+            if (_lineEntities == null) return;
+            if (_lineEntities.Length == 0) return;
+            if (_currentLine >= _lineEntities.Length) return;
+            
+            _lineEntities[_currentLine].Backspace();
+        }
+
+        public void CheckWord(KeyWord word)
+        {
+            // Todo Check word
+
+            _currentLine += 1;
         }
     }
 }

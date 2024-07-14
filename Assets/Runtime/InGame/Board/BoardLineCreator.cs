@@ -7,15 +7,17 @@ namespace Runtime.InGame.Board
     public class BoardLineCreator : MonoBehaviour
     {
         [SerializeField] private BoardLineEntity lineEntity;
+
+        private const int LineAmount = 17;
         
-        public BoardLineEntity[] CreateLines(int amount)
+        public BoardLineEntity[] CreateLines(int numberOfLetter)
         {
-            var lineEntities = new BoardLineEntity[amount];
+            var lineEntities = new BoardLineEntity[LineAmount];
             
-            for (var i = 0; i < amount; i++)
+            for (var i = 0; i < LineAmount; i++)
             {
                 var line = Instantiate(lineEntity, transform);
-                line.InitBoardLine(5);
+                line.InitBoardLine(numberOfLetter);
                 lineEntities[i] = line;
             }
 

@@ -16,5 +16,10 @@ namespace Runtime.InGame.Board
         {
             cellText.text = key.ToString();
         }
+
+        public void Delete()
+        {
+            cellText.text = "";
+        }
     }
 }

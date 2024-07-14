@@ -26,10 +26,21 @@ namespace Runtime.InGame.Board
         public void Write(KeyCode key)
         {
             if (_cellEntities == null) return;
+            if (_cellEntities.Length == 0) return;
             if (_currentCell >= _cellEntities.Length) return;
             
             _cellEntities[_currentCell].Write(key);
             _currentCell += 1;
+        }
+
+        public void Backspace()
+        {
+            if (_cellEntities == null) return;
+            if (_cellEntities.Length == 0) return;
+            _currentCell -= 1;
+            if (_currentCell >= _cellEntities.Length) return;
+
+            _cellEntities[_currentCell].Delete();
         }
     }
 }
