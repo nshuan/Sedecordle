@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using EasyButtons;
+using Runtime.Const;
 
 namespace Runtime.InGame.Board
 {
@@ -41,9 +42,10 @@ namespace Runtime.InGame.Board
             {
                 var cell = Instantiate(cellEntity, transform);
                 cell.InitCell();
+                cell.CellImage.color = ColorConst.Default.pendingLineColor;
                 cellEntities[i] = cell;
             }
-
+            
             return cellEntities;
         }
 

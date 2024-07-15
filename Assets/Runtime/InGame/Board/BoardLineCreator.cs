@@ -1,3 +1,4 @@
+using Runtime.Const;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,8 +19,11 @@ namespace Runtime.InGame.Board
             {
                 var line = Instantiate(lineEntity, transform);
                 line.InitBoardLine(numberOfLetter);
+                line.LineColor = ColorConst.Default.pendingLineColor;
                 lineEntities[i] = line;
             }
+
+            lineEntities[0].LineColor = ColorConst.Default.activeLineColor;
 
             return lineEntities;
         }

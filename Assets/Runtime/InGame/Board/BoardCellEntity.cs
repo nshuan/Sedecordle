@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,7 +6,10 @@ namespace Runtime.InGame.Board
 {
     public class BoardCellEntity : MonoBehaviour
     {
+        [SerializeField] private Image cellImage;
         [SerializeField] private Text cellText;
+
+        public Image CellImage => cellImage;
         
         public void InitCell()
         {

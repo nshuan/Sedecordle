@@ -1,7 +1,9 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using EasyButtons;
+using Runtime.Const;
 
 namespace Runtime.InGame.Board
 {
@@ -10,6 +12,24 @@ namespace Runtime.InGame.Board
     {
         private BoardCellCreator _cellCreator;
 
+        public Color LineColor
+        {
+            get
+            {
+                if (_cellEntities == null) return ColorConst.Default.pendingLineColor;
+                if (_cellEntities.Length == 0) return ColorConst.Default.pendingLineColor;
+                return _cellEntities[0].CellImage.color;
+            }
+            set
+            {
+                if (_cellEntities == null) return;
+                foreach (var cell in _cellEntities)
+                {
+                    cell.CellImage.color = value;
+                }
+            }
+        }
+        
         private BoardCellEntity[] _cellEntities;
         private int _currentCell = 0;
         

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core.Singleton;
+using EasyButtons;
 using Runtime.InGame.Board;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Runtime.InGame
             base.Awake();
 
             _input = new Stack<KeyCode>();
-            LoadGame(NumberOfLetter);
+            // LoadGame(NumberOfLetter);
         }
 
         private void OnEnable()
@@ -36,7 +37,7 @@ namespace Runtime.InGame
 
         private void OnLetterPressed(KeyCode key)
         {
-            if (_input.Count > NumberOfLetter)
+            if (_input.Count >= NumberOfLetter)
                 return;
             
             _input.Push(key);
@@ -45,9 +46,6 @@ namespace Runtime.InGame
             {
                 board.Write(key);
             }
-            
-            if (_input.Count == NumberOfLetter)
-                EndTurn();
         }
 
         private void OnEnterPressed()
@@ -67,6 +65,7 @@ namespace Runtime.InGame
             }
         }
         
+        [Button]
         private void LoadGame(int numberOfLetter)
         {
             boardManager.BuildBoards(numberOfLetter);

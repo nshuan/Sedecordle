@@ -13,6 +13,12 @@ namespace Runtime.InGame.Board
         public void BuildBoards(int numberOfLetter)
         {
             if (boardContainer == null) boardContainer = FindObjectOfType<Canvas>().transform;
+            
+            foreach (Transform board in boardContainer.transform)
+            {
+                Destroy(board.gameObject);
+            }
+            
             BoardEntities = new BoardEntity[BoardAmount];
             for (var i = 0; i < BoardAmount; i++)
             {

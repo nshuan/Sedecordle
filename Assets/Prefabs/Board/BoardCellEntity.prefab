@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 396b1530c93740379e1816b123af5c0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cellImage: {fileID: 7778792325497014382}
   cellText: {fileID: 9039219765558387424}
 --- !u!1 &8077929273013456381
 GameObject:
