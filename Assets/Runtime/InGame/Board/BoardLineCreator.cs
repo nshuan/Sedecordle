@@ -9,7 +9,8 @@ namespace Runtime.InGame.Board
     {
         [SerializeField] private BoardLineEntity lineEntity;
 
-        private const int LineAmount = 21;
+        public const int LineAmount = 21;
+        public const float ActiveLineScale = 2.6f;
         
         public BoardLineEntity[] CreateLines(int numberOfLetter)
         {
@@ -23,6 +24,8 @@ namespace Runtime.InGame.Board
                 lineEntities[i] = line;
             }
 
+            var size = ((RectTransform)lineEntities[0].transform).sizeDelta;
+            ((RectTransform)lineEntities[0].transform).sizeDelta = new Vector2(size.x, ActiveLineScale * size.y);
             lineEntities[0].LineColor = ColorConst.Default.activeLineColor;
 
             return lineEntities;

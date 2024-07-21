@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0f64f0c0f1f48be907d9238bd690d66, type: 3}
   m_Name: ColorConst
   m_EditorClassIdentifier: 
-  activeLineColor: {r: 0.8588236, g: 0.8745099, b: 0.9215687, a: 1}
+  activeLineColor: {r: 0.7797704, g: 0.81831837, b: 0.9339623, a: 1}
   pendingLineColor: {r: 0.9294118, g: 0.93725497, b: 0.9568628, a: 1}
   notExistColor: {r: 0.7021538, g: 0.7203883, b: 0.764151, a: 1}
   notPlaceColor: {r: 0.9723329, g: 0.990566, b: 0.34950158, a: 1}
