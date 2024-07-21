@@ -16,21 +16,21 @@ namespace Runtime.InGame.Board
         {
             get
             {
-                if (_cellEntities == null) return ColorConst.Default.pendingLineColor;
-                if (_cellEntities.Length == 0) return ColorConst.Default.pendingLineColor;
-                return _cellEntities[0].CellImage.color;
+                if (CellEntities == null) return ColorConst.Default.pendingLineColor;
+                if (CellEntities.Length == 0) return ColorConst.Default.pendingLineColor;
+                return CellEntities[0].CellImage.color;
             }
             set
             {
-                if (_cellEntities == null) return;
-                foreach (var cell in _cellEntities)
+                if (CellEntities == null) return;
+                foreach (var cell in CellEntities)
                 {
                     cell.CellImage.color = value;
                 }
             }
         }
         
-        private BoardCellEntity[] _cellEntities;
+        public BoardCellEntity[] CellEntities { get; private set; }
         private int _currentCell = 0;
         
         private void Awake()
@@ -40,27 +40,27 @@ namespace Runtime.InGame.Board
 
         public void InitBoardLine(int cellAmount)
         {
-            _cellEntities = _cellCreator.CreateCells(cellAmount, Vector2Int.zero, 5);
+            CellEntities = _cellCreator.CreateCells(cellAmount, Vector2Int.zero, 5);
         }
 
         public void Write(KeyCode key)
         {
-            if (_cellEntities == null) return;
-            if (_cellEntities.Length == 0) return;
-            if (_currentCell >= _cellEntities.Length) return;
+            if (CellEntities == null) return;
+            if (CellEntities.Length == 0) return;
+            if (_currentCell >= CellEntities.Length) return;
             
-            _cellEntities[_currentCell].Write(key);
+            CellEntities[_currentCell].Write(key);
             _currentCell += 1;
         }
 
         public void Backspace()
         {
-            if (_cellEntities == null) return;
-            if (_cellEntities.Length == 0) return;
+            if (CellEntities == null) return;
+            if (CellEntities.Length == 0) return;
             _currentCell -= 1;
-            if (_currentCell >= _cellEntities.Length) return;
+            if (_currentCell >= CellEntities.Length) return;
 
-            _cellEntities[_currentCell].Delete();
+            CellEntities[_currentCell].Delete();
         }
     }
 }

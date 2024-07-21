@@ -18,7 +18,7 @@ namespace Runtime.InGame
         
         public KeyWord(string str)
         {
-            _value = str;
+            _value = str.ToUpper();
             _word = new List<KeyCode>();
             foreach (var c in str)
             {
@@ -36,6 +36,9 @@ namespace Runtime.InGame
                 _word.Add(key);
             }
         }
+
+        public int Count => _word.Count;
+        public int Length => Count;
         
         public override string ToString()
         {

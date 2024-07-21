@@ -9,7 +9,7 @@ namespace Runtime.InGame.Board
     {
         [SerializeField] private BoardLineEntity lineEntity;
 
-        private const int LineAmount = 17;
+        private const int LineAmount = 21;
         
         public BoardLineEntity[] CreateLines(int numberOfLetter)
         {

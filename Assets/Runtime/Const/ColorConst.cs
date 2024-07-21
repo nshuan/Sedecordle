@@ -9,6 +9,12 @@ namespace Runtime.Const
         [SerializeField] public Color activeLineColor;
         [SerializeField] public Color pendingLineColor;
 
+        [Space] 
+        [Header("Passed line colors")] 
+        [SerializeField] public Color notExistColor;
+        [SerializeField] public Color notPlaceColor;
+        [SerializeField] public Color correctColor;
+
         #region SINGLETON
 
         private const string Path = "ScriptableObjects/ColorConst";
@@ -20,8 +26,10 @@ namespace Runtime.Const
                 var result = Resources.Load<ColorConst>(Path);
                 if (result != null) return result;
                 var instance = ScriptableObject.CreateInstance<ColorConst>();
+#if UNITY_EDITOR
                 AssetDatabase.CreateAsset(instance, "Assets/Resources/" + Path);
                 AssetDatabase.SaveAssets();
+#endif
                 return instance;
             }
         }

@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using EasyButtons;
+using Runtime.Const;
+using Runtime.InGame.WordChecking;
 
 namespace Runtime.InGame.Board
 {
@@ -50,9 +52,16 @@ namespace Runtime.InGame.Board
 
         public void CheckWord(KeyWord word)
         {
-            // Todo Check word
+            var result = WordChecker.Instance.CheckWord(word, Target);
 
+            var line = _lineEntities[_currentLine];
+            for (var i = 0; i < line.CellEntities.Length; i++)
+            {
+                line.CellEntities[i].CellImage.color = result[i].GetMatchColor();
+            }
+            
             _currentLine += 1;
+            _lineEntities[_currentLine].LineColor = ColorConst.Default.activeLineColor;
         }
     }
 }

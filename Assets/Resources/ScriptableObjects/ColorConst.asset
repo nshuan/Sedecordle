@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeLineColor: {r: 0.8588236, g: 0.8745099, b: 0.9215687, a: 1}
   pendingLineColor: {r: 0.9294118, g: 0.93725497, b: 0.9568628, a: 1}
+  notExistColor: {r: 0.7021538, g: 0.7203883, b: 0.764151, a: 1}
+  notPlaceColor: {r: 0.9723329, g: 0.990566, b: 0.34950158, a: 1}
+  correctColor: {r: 0.4380732, g: 0.99215686, b: 0.35294116, a: 1}
