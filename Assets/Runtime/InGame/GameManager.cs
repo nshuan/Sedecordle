@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core.Singleton;
+using DG.Tweening;
 using EasyButtons;
 using Runtime.InGame.Board;
 using UnityEngine;
@@ -8,17 +9,23 @@ namespace Runtime.InGame
 {
     public class GameManager : MonoSingleton<GameManager>
     {
-        public BoardManager boardManager;
-
-        private Stack<KeyCode> _input;
         private const int NumberOfLetter = 5;
+        private const int MaxTurn = 21;
+        
+        [SerializeField] private BoardManager boardManager;
+        [SerializeField] private WinLoseManager winLoseManager;
+
+        public List<BoardEntity> BoardEntities => boardManager.BoardEntities;
+        
+        private Stack<KeyCode> _input;
+        private int _currentTurn = 1;
         
         protected override void Awake()
         {
             base.Awake();
 
             _input = new Stack<KeyCode>();
-            // LoadGame(NumberOfLetter);
+            LoadGame(NumberOfLetter);
         }
 
         private void OnEnable()
@@ -68,22 +75,41 @@ namespace Runtime.InGame
         [Button]
         private void LoadGame(int numberOfLetter)
         {
+            _currentTurn = 1;
             boardManager.BuildBoards(numberOfLetter);
             boardManager.SetTargets(new []{ "virus" });
         }
 
         private void EndTurn()
         {
-            
             // Check word
+            InputManager.BlockInput();
             var inputWord = _input.ToKeyWord();
+#if UNITY_EDITOR
             Debug.Log("Turn ended! Checking word: " + inputWord);
+#endif
             _input.Clear();
+            DOTween.Kill(transform);
+            var sequence = DOTween.Sequence(transform);
             foreach (var board in boardManager.BoardEntities)
             {
-                board.CheckWord(inputWord);
+                sequence.Join(board.CheckWord(inputWord));
             }
+
+            _currentTurn += 1;
+            sequence.OnComplete(() =>
+            {
+                var win = winLoseManager.CheckWin(BoardEntities);
+                if (win) return;
+
+                if (_currentTurn > MaxTurn)
+                {
+                    winLoseManager.DoLose();
+                    return;
+                }
+                
+                InputManager.UnBlockInput();
+            });
         }
-        
     }
 }

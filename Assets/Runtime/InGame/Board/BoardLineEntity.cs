@@ -40,7 +40,7 @@ namespace Runtime.InGame.Board
 
         public void InitBoardLine(int cellAmount)
         {
-            CellEntities = _cellCreator.CreateCells(cellAmount, Vector2Int.zero, 5);
+            CellEntities = _cellCreator.CreateCells(cellAmount);
         }
 
         public void Write(KeyCode key)

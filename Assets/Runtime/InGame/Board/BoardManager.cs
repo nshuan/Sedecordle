@@ -9,20 +9,23 @@ namespace Runtime.InGame.Board
 {
     public class BoardManager : MonoBehaviour
     {
-        [SerializeField] private Transform boardContainer;
+        [SerializeField] private ScrollRect scroller;
         [SerializeField] private BoardGroupEntity boardGroupEntity;
         
         public List<BoardEntity> BoardEntities { get; private set; }
-        private const int BoardAmount = 4;
+        private const int BoardAmount = 16;
         
         public void BuildBoards(int numberOfLetter)
         {
-            if (boardContainer == null)
+            if (scroller == null)
             {
-                boardContainer = FindObjectOfType<Canvas>().transform;
+#if UNITY_EDITOR
+                Debug.LogError("Missing scroller!");
+#endif
+                return;
             }
             
-            foreach (Transform boardGroup in boardContainer.transform)
+            foreach (Transform boardGroup in scroller.content.transform)
             {
                 Destroy(boardGroup.gameObject);
             }
@@ -31,14 +34,17 @@ namespace Runtime.InGame.Board
             var boardToInit = BoardAmount;
             while (boardToInit > 0)
             {
-                var boardGroup = Instantiate(boardGroupEntity, boardContainer);
-                var newBoards = boardGroup.BuildBoards(Math.Min(boardToInit, 4), numberOfLetter);
+                var boardGroup = Instantiate(boardGroupEntity, scroller.content);
+                var newBoards = boardGroup.BuildBoards(Math.Min(boardToInit, BoardGroupEntity.MaxBoard), numberOfLetter);
+                var boardIndexFrom = BoardAmount - boardToInit + 1;
+                var boardIndexTo = Math.Min(boardIndexFrom + BoardGroupEntity.MaxBoard - 1, BoardAmount);
+                boardGroup.SetTitle("Boards #" + boardIndexFrom + "-" + boardIndexTo);
                 foreach (var board in newBoards)
                 {
                     BoardEntities.Add(board);
                 }
 
-                boardToInit -= 4;
+                boardToInit -= BoardGroupEntity.MaxBoard;
             }
         }
 

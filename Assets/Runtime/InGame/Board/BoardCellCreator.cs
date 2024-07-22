@@ -14,8 +14,8 @@ namespace Runtime.InGame.Board
         private RectTransform _rectTransform;
         private HorizontalLayoutGroup _layoutGroup;
 
-        private Vector2Int _padding = Vector2Int.zero;
-        private float _spacing = 0f;
+        [SerializeField] private Vector2Int padding;
+        [SerializeField] private float spacing;
         
         private void Awake()
         {
@@ -25,12 +25,10 @@ namespace Runtime.InGame.Board
             _rectTransform.pivot = new Vector2(0.5f, 1f);
         }
 
-        public BoardCellEntity[] CreateCells(int amount, Vector2Int padding, float spacing = 0f)
+        public BoardCellEntity[] CreateCells(int amount)
         {
             var cellEntities = new BoardCellEntity[amount];
-            
-            _padding = padding;
-            _spacing = spacing;
+
             _layoutGroup.padding = new RectOffset(padding.x, padding.x, padding.y, padding.y);
             _layoutGroup.spacing = spacing;
             _layoutGroup.childControlWidth = true;
@@ -43,6 +41,7 @@ namespace Runtime.InGame.Board
                 var cell = Instantiate(cellEntity, transform);
                 cell.InitCell();
                 cell.CellImage.color = ColorConst.Default.pendingLineColor;
+                cell.CellText.color = ColorConst.Default.activeTextColor;
                 cellEntities[i] = cell;
             }
             
@@ -56,9 +55,9 @@ namespace Runtime.InGame.Board
         
 #if UNITY_EDITOR
         [Button]
-        private void TestInitCells(int amount, int paddingX, int paddingY, float spacing)
+        private void TestInitCells(int amount)
         {
-            CreateCells(amount, new Vector2Int(paddingX, paddingY), spacing);
+            CreateCells(amount);
         }
 #endif
     }

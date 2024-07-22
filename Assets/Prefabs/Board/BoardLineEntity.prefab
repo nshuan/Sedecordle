@@ -78,6 +78,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellEntity: {fileID: 7778792325497014381, guid: b9a59e9c8726bbf499be639f5a597a83, type: 3}
+  padding: {x: 0, y: 0}
+  spacing: 17.5
 --- !u!114 &2537915855987929604
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System;
+using Runtime.Const;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,6 +17,7 @@ namespace Runtime.InGame.Keyboard
         private void Awake()
         {
             letterText.text = letter.ToString();
+            letterText.color = ColorConst.Default.keyboardLetterColor;
         }
 
         public void OnPointerClick(PointerEventData eventData)

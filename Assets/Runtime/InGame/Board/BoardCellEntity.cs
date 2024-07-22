@@ -10,6 +10,7 @@ namespace Runtime.InGame.Board
         [SerializeField] private Text cellText;
 
         public Image CellImage => cellImage;
+        public Text CellText => cellText;
         
         public void InitCell()
         {

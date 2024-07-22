@@ -10,9 +10,12 @@ namespace Runtime.InGame
         public static event Action OnBackspacePressed;
         public static event Action<KeyCode> OnLetterPressed;
 
+        private static bool Inputting { get; set; } = true;
+        
         private void Awake()
         {
             KeyboardKey.OnVirtualKeyPressed += OnVirtualKeyPressed;
+            UnBlockInput();
         }
 
         private void OnDestroy()
@@ -22,6 +25,8 @@ namespace Runtime.InGame
 
         private void OnGUI()
         {
+            if (!Inputting) return;
+            
             var e = Event.current;
             
             if (e.type == EventType.KeyDown)
@@ -44,6 +49,8 @@ namespace Runtime.InGame
 
         private void OnVirtualKeyPressed(KeyCode key)
         {
+            if (!Inputting) return;
+            
             if (key == KeyCode.Return)
             {
                 OnEnterPressed?.Invoke();
@@ -56,6 +63,16 @@ namespace Runtime.InGame
             {
                 OnLetterPressed?.Invoke(key);
             }
+        }
+
+        public static void BlockInput()
+        {
+            Inputting = false;
+        }
+
+        public static void UnBlockInput()
+        {
+            Inputting = true;
         }
     }
 }

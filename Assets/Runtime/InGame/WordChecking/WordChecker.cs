@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core.Singleton;
 using Runtime.Const;
 using UnityEngine;
@@ -25,6 +26,11 @@ namespace Runtime.InGame.WordChecking
                 CharMatch.Correct => ColorConst.Default.correctColor,
                 _ => ColorConst.Default.notExistColor
             };
+        }
+
+        public static bool IsAllCorrect(this List<CharMatch> results)
+        {
+            return results.All(charMatch => charMatch != CharMatch.NotPlace && charMatch != CharMatch.NotExist);
         }
     }
 }

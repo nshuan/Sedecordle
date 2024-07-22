@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,7 @@ namespace Runtime.InGame.Board
         private int _currentLine = 0;
         
         public KeyWord Target { get; set; }
+        public bool IsBoardComplete { get; private set; } = false;
         
         private void Awake()
         {
@@ -37,6 +39,7 @@ namespace Runtime.InGame.Board
         
         public void Write(KeyCode key)
         {
+            if (IsBoardComplete) return;
             if (_lineEntities == null) return;
             if (_lineEntities.Length == 0) return;
             if (_currentLine >= _lineEntities.Length) return;
@@ -46,6 +49,7 @@ namespace Runtime.InGame.Board
 
         public void Backspace()
         {
+            if (IsBoardComplete) return;
             if (_lineEntities == null) return;
             if (_lineEntities.Length == 0) return;
             if (_currentLine >= _lineEntities.Length) return;
@@ -53,9 +57,11 @@ namespace Runtime.InGame.Board
             _lineEntities[_currentLine].Backspace();
         }
 
-        public void CheckWord(KeyWord word)
+        public Tween CheckWord(KeyWord word)
         {
-            DoCheckWord(word).Play().OnComplete(() =>
+            if (IsBoardComplete) return DOTween.Sequence();
+            
+            return DoCheckWord(word).OnComplete(() =>
             {
                 _currentLine += 1;
             });
@@ -65,7 +71,7 @@ namespace Runtime.InGame.Board
         {
             var result = WordChecker.Instance.CheckWord(word, Target);
 
-            transform.DOKill();
+            DOTween.Kill(transform);
             var sequence = DOTween.Sequence(transform);
             var line = _lineEntities[_currentLine];
             for (var i = 0; i < line.CellEntities.Length; i++)
@@ -73,9 +79,15 @@ namespace Runtime.InGame.Board
                 var cell = line.CellEntities[i];
                 var cellColor = result[i].GetMatchColor();
                 sequence.Append(cell.transform.DOScaleY(0f, 0.2f).SetEase(Ease.InQuad))
-                    .AppendCallback(() => cell.CellImage.color = cellColor)
+                    .AppendCallback(() =>
+                    {
+                        cell.CellImage.color = cellColor;
+                        cell.CellText.color = ColorConst.Default.passedTextColor;
+                    })
                     .Append(cell.transform.DOScaleY(1f, 0.05f));
             }
+
+            sequence.AppendInterval(0.1f);
 
             var lineRect = (RectTransform)line.transform;
             var deltaSize = lineRect.sizeDelta;
@@ -83,13 +95,23 @@ namespace Runtime.InGame.Board
             {
                 lineRect.sizeDelta = new Vector2(deltaSize.x, deltaSize.y / BoardLineCreator.ActiveLineScale);
             });
+
+            if (result.IsAllCorrect())
+            {
+                IsBoardComplete = true;
+                sequence.AppendCallback(() =>
+                {
+                    for (var i = _currentLine + 1; i < _lineEntities.Length; i++)
+                    {
+                        _lineEntities[i].gameObject.SetActive(false);
+                    }
+                });
+            }
             
-            if (_currentLine + 1 < _lineEntities.Length)
+            if (!IsBoardComplete && _currentLine + 1 < _lineEntities.Length)
             {
                 var inactiveLine = _lineEntities[_currentLine + 1];
                 var inactiveLineRect = (RectTransform)inactiveLine.transform;
-                // inactiveLineRect.pivot = new Vector2(0.5f, 0);
-                // sequence.JoinCallback(() => inactiveLineRect.pivot = new Vector2(0.5f, 0));
                 sequence.AppendCallback(() =>
                 {
                     inactiveLineRect.sizeDelta = deltaSize;
@@ -97,8 +119,6 @@ namespace Runtime.InGame.Board
                 sequence.AppendCallback(() =>
                 {
                     inactiveLine.LineColor = ColorConst.Default.activeLineColor;
-                    // inactiveLineRect.pivot = new Vector2(0.5f, 1f);
-                    // if (_verticalLayoutGroup is not null) _verticalLayoutGroup.enabled = true;
                 });
             }
 
