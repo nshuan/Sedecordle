@@ -13,7 +13,7 @@ namespace Runtime.InGame.Board
         [SerializeField] private BoardGroupEntity boardGroupEntity;
         
         public List<BoardEntity> BoardEntities { get; private set; }
-        private const int BoardAmount = 16;
+        private static int BoardAmount => GameManager.NumberOfWords;
         
         public void BuildBoards(int numberOfLetter)
         {
@@ -48,11 +48,11 @@ namespace Runtime.InGame.Board
             }
         }
 
-        public void SetTargets(string[] targets)
+        public void SetTargets(List<string> targets)
         {
             for (var i = 0; i < BoardEntities.Count; i++)
             {
-                if (i >= targets.Length)
+                if (i >= targets.Count)
                 {
                     BoardEntities[i].SetTarget("ABCDEF");
                     continue;

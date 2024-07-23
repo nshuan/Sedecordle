@@ -3,6 +3,7 @@ using Core.Singleton;
 using DG.Tweening;
 using EasyButtons;
 using Runtime.InGame.Board;
+using Runtime.InGame.WordService;
 using UnityEngine;
 
 namespace Runtime.InGame
@@ -11,9 +12,11 @@ namespace Runtime.InGame
     {
         private const int NumberOfLetter = 5;
         private const int MaxTurn = 21;
+        public const int NumberOfWords = 16;
         
         [SerializeField] private BoardManager boardManager;
         [SerializeField] private WinLoseManager winLoseManager;
+        private IWordService _wordService = new DummyWordService();
 
         public List<BoardEntity> BoardEntities => boardManager.BoardEntities;
         
@@ -76,8 +79,9 @@ namespace Runtime.InGame
         private void LoadGame(int numberOfLetter)
         {
             _currentTurn = 1;
+            var targetWords = _wordService.GetRandomWords(16);
             boardManager.BuildBoards(numberOfLetter);
-            boardManager.SetTargets(new []{ "virus" });
+            boardManager.SetTargets(targetWords);
         }
 
         private void EndTurn()

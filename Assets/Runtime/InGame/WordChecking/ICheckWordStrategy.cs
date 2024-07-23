@@ -24,13 +24,18 @@ namespace Runtime.InGame.WordChecking
             for (var i = 0; i < wordToCheck.Count; i++)
             {
                 var charResult = CharMatch.NotExist;
-                for (var j = 0; j < wordToCheck.Count; j++)
+                if (target[i] == wordToCheck[i]) charResult = CharMatch.Correct;
+                else
                 {
-                    if (j >= target.Count) break;
-                    if (target[j] == wordToCheck[i])
+                    for (var j = 0; j < wordToCheck.Count; j++)
                     {
-                        charResult = j == i ? CharMatch.Correct : CharMatch.NotPlace;
-                        break;
+                        if (j >= target.Count) break;
+                        if (j == i) continue;
+                        if (target[j] == wordToCheck[i])
+                        {
+                            charResult = j == i ? CharMatch.Correct : CharMatch.NotPlace;
+                            break;
+                        }
                     }
                 }
                 

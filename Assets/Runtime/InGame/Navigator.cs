@@ -6,7 +6,7 @@ namespace Runtime.InGame
     {
         public static void LoadScene(string scene)
         {
-            SceneManager.LoadScene(scene);
+            SceneManager.LoadSceneAsync(scene);
         }
     }
 }
