@@ -31,7 +31,7 @@ namespace Runtime.InGame.WordService
             "Hinee"
         };
             
-        public List<string> GetRandomWords(int amount)
+        public List<string> GetRandomWords(int length, int amount)
         {
             var shuffledDict = new List<string>(_dict);
             var count = shuffledDict.Count;

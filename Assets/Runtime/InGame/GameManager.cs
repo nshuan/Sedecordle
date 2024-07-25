@@ -16,7 +16,7 @@ namespace Runtime.InGame
         
         [SerializeField] private BoardManager boardManager;
         [SerializeField] private WinLoseManager winLoseManager;
-        private IWordService _wordService = new DummyWordService();
+        private IWordService _wordService = new DictionaryWordService();
 
         public List<BoardEntity> BoardEntities => boardManager.BoardEntities;
         
@@ -79,7 +79,7 @@ namespace Runtime.InGame
         private void LoadGame(int numberOfLetter)
         {
             _currentTurn = 1;
-            var targetWords = _wordService.GetRandomWords(16);
+            var targetWords = _wordService.GetRandomWords(numberOfLetter, 16);
             boardManager.BuildBoards(numberOfLetter);
             boardManager.SetTargets(targetWords);
         }

@@ -4,6 +4,6 @@ namespace Runtime.InGame.WordService
 {
     public interface IWordService
     {
-        List<string> GetRandomWords(int amount);
+        List<string> GetRandomWords(int length, int amount);
     }
 }

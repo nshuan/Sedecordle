@@ -12,7 +12,7 @@ namespace Runtime.InGame.WordChecking
         private ICheckWordStrategy _checkStrategy = new SedecordleCheckStrategy();
 
         public List<CharMatch> CheckWord(KeyWord wordToCheck, KeyWord target) =>
-            _checkStrategy?.CheckWord(wordToCheck, target);
+            _checkStrategy?.CheckWordMatch(wordToCheck, target);
     }
 
     public static class CharMatchExtension

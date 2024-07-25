@@ -5,7 +5,7 @@ namespace Runtime.InGame.WordChecking
 {
     public interface ICheckWordStrategy
     {
-        List<CharMatch> CheckWord(KeyWord wordToCheck, KeyWord target);
+        List<CharMatch> CheckWordMatch(KeyWord wordToCheck, KeyWord target);
     }
 
     public enum CharMatch
@@ -17,7 +17,7 @@ namespace Runtime.InGame.WordChecking
 
     public class SedecordleCheckStrategy : ICheckWordStrategy
     {
-        public List<CharMatch> CheckWord(KeyWord wordToCheck, KeyWord target)
+        public List<CharMatch> CheckWordMatch(KeyWord wordToCheck, KeyWord target)
         {
             var result = new List<CharMatch>();
             

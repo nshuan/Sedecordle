@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
@@ -12,12 +13,15 @@ namespace Runtime.InGame.Board
     [RequireComponent(typeof(BoardLineCreator))]
     public class BoardEntity : MonoBehaviour
     {
+        public static Dictionary<int, Action<KeyWord, List<CharMatch>>> OnBoardChecks = new Dictionary<int, Action<KeyWord, List<CharMatch>>>();
+        
         private BoardLineCreator _lineCreator;
         private VerticalLayoutGroup _verticalLayoutGroup;
 
         private BoardLineEntity[] _lineEntities;
         private int _currentLine = 0;
         
+        public int BoardId { get; set; }
         public KeyWord Target { get; set; }
         public bool IsBoardComplete { get; private set; } = false;
         
@@ -125,6 +129,12 @@ namespace Runtime.InGame.Board
             sequence.AppendCallback(() =>
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(lineRect);
+            });
+
+            sequence.AppendCallback(() =>
+            {
+                if (OnBoardChecks.ContainsKey(BoardId))
+                    OnBoardChecks[BoardId]?.Invoke(word, result);
             });
 
             return sequence;

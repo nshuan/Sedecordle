@@ -14,6 +14,7 @@ namespace Runtime.Const
         [SerializeField] public Color activeTextColor;
         [SerializeField] public Color passedTextColor;
         [SerializeField] public Color keyboardLetterColor; 
+        [SerializeField] public Color keyboardKeyColor; 
 
         [Space] 
         [Header("Passed line colors")] 

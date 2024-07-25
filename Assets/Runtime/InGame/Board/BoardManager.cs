@@ -13,7 +13,8 @@ namespace Runtime.InGame.Board
         [SerializeField] private BoardGroupEntity boardGroupEntity;
         
         public List<BoardEntity> BoardEntities { get; private set; }
-        private static int BoardAmount => GameManager.NumberOfWords;
+        public static int BoardAmount => GameManager.NumberOfWords;
+        public static Vector2Int BoardContainerSize = new Vector2Int(2, 8);
         
         public void BuildBoards(int numberOfLetter)
         {
@@ -32,6 +33,7 @@ namespace Runtime.InGame.Board
             
             BoardEntities = new List<BoardEntity>();
             var boardToInit = BoardAmount;
+            var boardIndex = 0;
             while (boardToInit > 0)
             {
                 var boardGroup = Instantiate(boardGroupEntity, scroller.content);
@@ -41,6 +43,8 @@ namespace Runtime.InGame.Board
                 boardGroup.SetTitle("Boards #" + boardIndexFrom + "-" + boardIndexTo);
                 foreach (var board in newBoards)
                 {
+                    board.BoardId = boardIndex;
+                    boardIndex += 1;
                     BoardEntities.Add(board);
                 }
 
