@@ -1,7 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Runtime.Vocabulary;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Runtime.InGame.WordService
 {
@@ -39,6 +40,11 @@ namespace Runtime.InGame.WordService
                 uniqueIndexes.Add(0);
 
             return uniqueIndexes.Select(index => _wordsMapByLength[length][index]).ToList();
+        }
+
+        public bool IsWordExist(string word)
+        {
+            return WordDictionary.WordsMap.ContainsKey(word);
         }
     }
 }

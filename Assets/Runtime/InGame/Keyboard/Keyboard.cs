@@ -14,14 +14,17 @@ namespace Runtime.InGame.Keyboard
         private void Awake()
         {
             _keys = GetComponentsInChildren<KeyboardKey>().ToList();
+
+            GameManager.OnLoadGame += SetupKeyboard;
         }
-        
+
         [Button]
-        private void Start()
+        private void SetupKeyboard()
         {
             var size = BoardManager.BoardContainerSize;
             foreach (var key in _keys)
             {
+                if (key.Letter is KeyCode.Return or KeyCode.Backspace) continue;
                 key.SetupKey(size.x, size.y);
             }
         }

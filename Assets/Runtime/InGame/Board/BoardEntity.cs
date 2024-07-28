@@ -14,6 +14,7 @@ namespace Runtime.InGame.Board
     public class BoardEntity : MonoBehaviour
     {
         public static Dictionary<int, Action<KeyWord, List<CharMatch>>> OnBoardChecks = new Dictionary<int, Action<KeyWord, List<CharMatch>>>();
+        public static Dictionary<int, Action> OnBoardCompletes = new Dictionary<int, Action>();
         
         private BoardLineCreator _lineCreator;
         private VerticalLayoutGroup _verticalLayoutGroup;
@@ -103,6 +104,8 @@ namespace Runtime.InGame.Board
             if (result.IsAllCorrect())
             {
                 IsBoardComplete = true;
+                if (OnBoardCompletes.ContainsKey(BoardId))
+                    OnBoardCompletes[BoardId]?.Invoke();
                 sequence.AppendCallback(() =>
                 {
                     for (var i = _currentLine + 1; i < _lineEntities.Length; i++)

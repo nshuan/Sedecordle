@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,12 +84,8 @@ namespace Runtime.InGame
 
         public static KeyWord ToKeyWord(this Stack<KeyCode> keys)
         {
-            var wordLength = keys.Count;
-            var array = new KeyCode[wordLength];
-            for (int i = 0; i < wordLength; i++)
-            {
-                array[wordLength - 1 - i] = keys.Pop();
-            }
+            var array = keys.ToArray();
+            Array.Reverse(array);
             return new KeyWord(array);
         }
     }

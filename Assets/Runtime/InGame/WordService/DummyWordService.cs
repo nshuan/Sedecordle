@@ -44,5 +44,10 @@ namespace Runtime.InGame.WordService
 
             return shuffledDict.GetRange(0, amount);
         }
+
+        public bool IsWordExist(string word)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

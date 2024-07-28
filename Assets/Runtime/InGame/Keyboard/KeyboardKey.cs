@@ -21,6 +21,7 @@ namespace Runtime.InGame.Keyboard
         private GridLayoutGroup _coverGrid;
         private RectTransform _coverRect;
 
+        public KeyCode Letter => letter;
         private List<KeyboardKeyLetterView> _previewCells;
         
         private void Awake()
@@ -78,8 +79,8 @@ namespace Runtime.InGame.Keyboard
                 var image = newPreviewCell.AddComponent<Image>();
                 var script = newPreviewCell.AddComponent<KeyboardKeyLetterView>();
                 script.SetImage(image);
-                _previewCells.Add(script);
                 image.color = Color.clear;
+                _previewCells.Add(script);
             }
             
             // Setup events
@@ -102,6 +103,13 @@ namespace Runtime.InGame.Keyboard
                 };
                 if (!BoardEntity.OnBoardChecks.TryAdd(i, checkAction))
                     BoardEntity.OnBoardChecks[i] += checkAction;
+
+                Action completeAction = () =>
+                {
+                    if (cell.CurrentValue <= CharMatch.NotExist) cell.CurrentValue = CharMatch.NotExist;
+                };
+                if (!BoardEntity.OnBoardCompletes.TryAdd(i, completeAction))
+                    BoardEntity.OnBoardCompletes[i] += completeAction;
             }
         }
     }

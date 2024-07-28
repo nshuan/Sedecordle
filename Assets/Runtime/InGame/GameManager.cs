@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using Core.Singleton;
 using DG.Tweening;
 using EasyButtons;
 using Runtime.InGame.Board;
 using Runtime.InGame.WordService;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Runtime.InGame
@@ -16,12 +18,14 @@ namespace Runtime.InGame
         
         [SerializeField] private BoardManager boardManager;
         [SerializeField] private WinLoseManager winLoseManager;
-        private IWordService _wordService = new DictionaryWordService();
+        public static IWordService WordService = new DictionaryWordService();
 
         public List<BoardEntity> BoardEntities => boardManager.BoardEntities;
         
         private Stack<KeyCode> _input;
         private int _currentTurn = 1;
+
+        public static event Action OnLoadGame;
         
         protected override void Awake()
         {
@@ -31,6 +35,11 @@ namespace Runtime.InGame
             LoadGame(NumberOfLetter);
         }
 
+        ~GameManager()
+        {
+            OnLoadGame = null;
+        }
+        
         private void OnEnable()
         {
             InputManager.OnEnterPressed += OnEnterPressed;
@@ -44,7 +53,7 @@ namespace Runtime.InGame
             InputManager.OnBackspacePressed -= OnBackspacePressed;
             InputManager.OnLetterPressed -= OnLetterPressed;
         }
-
+        
         private void OnLetterPressed(KeyCode key)
         {
             if (_input.Count >= NumberOfLetter)
@@ -60,7 +69,9 @@ namespace Runtime.InGame
 
         private void OnEnterPressed()
         {
-            if (_input.Count == NumberOfLetter) EndTurn();    
+            if (_input.Count != NumberOfLetter) return;
+            if (!WordService.IsWordExist(_input.ToKeyWord().ToString().ToLower())) return;
+            EndTurn();    
         }
         
         private void OnBackspacePressed()
@@ -79,9 +90,10 @@ namespace Runtime.InGame
         private void LoadGame(int numberOfLetter)
         {
             _currentTurn = 1;
-            var targetWords = _wordService.GetRandomWords(numberOfLetter, 16);
+            var targetWords = WordService.GetRandomWords(numberOfLetter, 16);
             boardManager.BuildBoards(numberOfLetter);
             boardManager.SetTargets(targetWords);
+            OnLoadGame?.Invoke();
         }
 
         private void EndTurn()
