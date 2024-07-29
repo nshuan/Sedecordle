@@ -392,7 +392,7 @@ MonoBehaviour:
   toastFrom: {x: 0, y: -280}
   toastTo: {x: 0, y: 280}
   alphaFrom: 0.2
-  alphaTo: 0.7
+  alphaTo: 0.8
   duration: 2.2
 --- !u!1 &3490196069813294380
 GameObject:

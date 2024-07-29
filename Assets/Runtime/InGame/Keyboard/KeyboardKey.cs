@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Runtime.Const;
 using Runtime.InGame.Board;
 using Runtime.InGame.WordChecking;
@@ -103,6 +104,16 @@ namespace Runtime.InGame.Keyboard
                 };
                 if (!BoardEntity.OnBoardChecks.TryAdd(i, checkAction))
                     BoardEntity.OnBoardChecks[i] += checkAction;
+                BoardEntity.OnBoardChecks[i] += FixCells;
+            }
+        }
+
+        private void FixCells(KeyWord keyword, List<CharMatch> result)
+        {
+            if (!keyword.Contains(letter)) return;
+            foreach (var cell in _previewCells.Where(cell => cell.CurrentValue <= CharMatch.NotExist))
+            {
+                cell.CurrentValue = CharMatch.NotExist;
             }
         }
     }
