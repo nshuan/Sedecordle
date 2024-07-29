@@ -5,6 +5,7 @@ using DG.Tweening;
 using EasyButtons;
 using Runtime.InGame.Board;
 using Runtime.InGame.WordService;
+using Runtime.ToastNotify;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -70,7 +71,11 @@ namespace Runtime.InGame
         private void OnEnterPressed()
         {
             if (_input.Count != NumberOfLetter) return;
-            if (!WordService.IsWordExist(_input.ToKeyWord().ToString().ToLower())) return;
+            if (!WordService.IsWordExist(_input.ToKeyWord().ToString().ToLower()))
+            {
+                Toast.Instance.Show("No word \"" + _input.ToKeyWord().ToString().ToUpper() + "\" is found!");
+                return;
+            }
             EndTurn();    
         }
         

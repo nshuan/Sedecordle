@@ -25,7 +25,12 @@ namespace Runtime.Vocabulary
             var json = File.ReadAllText(Path);
             var dataDictionary = JsonConvert.DeserializeObject<Dictionary<string, WordData>>(json);
 
-            return dataDictionary;
+            var lowercasedKey = new Dictionary<string, WordData>();
+            foreach (var word in dataDictionary)
+            {
+                lowercasedKey.TryAdd(word.Key.ToLower(), word.Value);
+            }
+            return lowercasedKey;
         }
     }
 }

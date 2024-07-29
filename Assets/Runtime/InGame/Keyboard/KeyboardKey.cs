@@ -103,13 +103,6 @@ namespace Runtime.InGame.Keyboard
                 };
                 if (!BoardEntity.OnBoardChecks.TryAdd(i, checkAction))
                     BoardEntity.OnBoardChecks[i] += checkAction;
-
-                Action completeAction = () =>
-                {
-                    if (cell.CurrentValue <= CharMatch.NotExist) cell.CurrentValue = CharMatch.NotExist;
-                };
-                if (!BoardEntity.OnBoardCompletes.TryAdd(i, completeAction))
-                    BoardEntity.OnBoardCompletes[i] += completeAction;
             }
         }
     }
