@@ -1,16 +1,18 @@
+using DG.Tweening;
 using Runtime.Const;
+using Runtime.DarkMode;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Runtime.InGame
 {
-    public class InGameBackground : MonoBehaviour
+    public class InGameBackground : MonoBehaviour, IAffectedByDarkMode
     {
         [SerializeField] private Image bgImage;
-        
-        private void Awake()
+
+        public Tween DoChangeColorMode(ColorConst colorPalette)
         {
-            bgImage.SetColor(ColorConst.Default.backgroundColor);
+            return bgImage.DOColor(ColorConst.Default.backgroundColor, 0.2f).SetEase(Ease.OutQuint);
         }
     }
 }

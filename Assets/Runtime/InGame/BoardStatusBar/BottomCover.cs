@@ -1,17 +1,19 @@
 using System;
+using DG.Tweening;
 using Runtime.Const;
+using Runtime.DarkMode;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Runtime.InGame.BoardStatusBar
 {
-    public class BottomCover : MonoBehaviour
+    public class BottomCover : MonoBehaviour, IAffectedByDarkMode
     {
         [SerializeField] private Image cover;
-        
-        private void Awake()
+
+        public Tween DoChangeColorMode(ColorConst colorPalette)
         {
-            cover.SetColor(ColorConst.Default.backgroundColor);
+            return cover.DOColor(ColorConst.Default.backgroundColor, 0.2f).SetEase(Ease.OutQuint);
         }
     }
 }

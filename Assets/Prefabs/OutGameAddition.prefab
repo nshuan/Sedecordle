@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7017636797662866710}
   m_Layer: 0
-  m_Name: InGameAddition
+  m_Name: OutGameAddition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,4 +76,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763d0d376a894a91948505df60c79770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeImmediately: 1
+  changeImmediately: 0

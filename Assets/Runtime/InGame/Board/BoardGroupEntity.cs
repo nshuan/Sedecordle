@@ -1,10 +1,12 @@
+using DG.Tweening;
 using Runtime.Const;
+using Runtime.DarkMode;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Runtime.InGame.Board
 {
-    public class BoardGroupEntity : MonoBehaviour
+    public class BoardGroupEntity : MonoBehaviour, IAffectedByDarkMode
     {
         [SerializeField] private BoardEntity boardEntity;
         [SerializeField] private Transform content;
@@ -37,7 +39,11 @@ namespace Runtime.InGame.Board
         public void SetTitle(string value)
         {
             title.text = value;
-            title.SetColor(ColorConst.Default.activeTextColor);
+        }
+
+        public Tween DoChangeColorMode(ColorConst colorPalette)
+        {
+            return title.DOColor(ColorConst.Default.activeTextColor, 0.2f).SetEase(Ease.OutQuint);
         }
     }
 }

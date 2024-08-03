@@ -16,6 +16,11 @@ namespace Runtime.LoadingEffect
             var sequence = DOTween.Sequence(transform)
                 .AppendInterval(0.4f);
 
+            foreach (var character in characters)
+            {
+                character.color += new Color(0f, 0f, 0f ,1f);
+            }
+            
             for (var i = 0; i < characters.Count; i++)
             {
                 var character = characters[i];

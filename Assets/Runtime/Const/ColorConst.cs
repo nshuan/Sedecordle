@@ -30,6 +30,10 @@ namespace Runtime.Const
         [SerializeField] public Color notPlaceColor;
         [SerializeField] public Color correctColor;
 
+        [Space] 
+        [Header("Icons")] 
+        [SerializeField] public Color iconColor;
+
         #region SINGLETON
 
         private const string Path = "ScriptableObjects/ColorConst";
@@ -46,12 +50,29 @@ namespace Runtime.Const
                     _defaultInstance = allColor[0];
                     foreach (var palette in allColor)
                     {
-                        // if (palette.colorMode != gameSetting.colorMode) continue;
-                        if (palette.colorMode != ColorMode.Dark) continue;
+                        if (palette.colorMode != gameSetting.colorMode) continue;
                         _defaultInstance = palette;
                         break;
                     }
                 }
+                return _defaultInstance;
+            }
+        }
+
+        public static ColorConst Reload
+        {
+            get
+            {
+                var gameSetting = GameSettings.Load;
+                var allColor = Resources.LoadAll<ColorConst>(Path);
+                _defaultInstance = allColor[0];
+                foreach (var palette in allColor)
+                {
+                    if (palette.colorMode != gameSetting.colorMode) continue;
+                    _defaultInstance = palette;
+                    break;
+                }
+
                 return _defaultInstance;
             }
         }

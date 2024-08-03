@@ -23,3 +23,4 @@ MonoBehaviour:
   notExistColor: {r: 0.23921569, g: 0.2509804, b: 0.32941177, a: 1}
   notPlaceColor: {r: 0.9529412, g: 0.7607843, b: 0.21568628, a: 1}
   correctColor: {r: 0.4745098, g: 0.72156864, b: 0.31764707, a: 1}
+  iconColor: {r: 0.92156863, g: 0.92941177, b: 0.9529412, a: 1}

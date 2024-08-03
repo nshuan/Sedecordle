@@ -6,22 +6,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using EasyButtons;
 using Runtime.Const;
+using Runtime.DarkMode;
 
 namespace Runtime.LoadingEffect
 {
-    public class Loading : MonoSingleton<Loading>
+    public class Loading : MonoSingleton<Loading>, IAffectedByDarkMode
     {
         [SerializeField] private Image loadingImage;
         [SerializeField] private MonoLoadingEffect[] effects;
+
+        private Canvas _canvas;
 
         public static bool IsLoading { get; set; } = false;
 
         protected override void Awake()
         {
             base.Awake();
-
-            loadingImage.SetColor(ColorConst.Default.activeLineColor);
+            
             loadingImage.gameObject.SetActive(false);
+            _canvas = GetComponent<Canvas>();
         }
 
         [Button]
@@ -53,18 +56,25 @@ namespace Runtime.LoadingEffect
             {
                 IsLoading = false;
                 loadingImage.gameObject.SetActive(false);
+                loadingImage.color += new Color(0f, 0f, 0f, 1f);
             });
         }
 
         private IEnumerator IEWaiting(float duration, Action onFinish)
         {
             yield return new WaitForSeconds(duration);
+            _canvas.worldCamera = Camera.current;
             onFinish?.Invoke();
         }
 
         public static void Show(float duration)
         {
             Instance.DoShow(duration);
+        }
+
+        public Tween DoChangeColorMode(ColorConst colorPalette)
+        {
+            return loadingImage.DOColor(ColorConst.Default.activeLineColor, 0.2f).SetEase(Ease.OutQuint);
         }
     }
 }
