@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 1ed4e62176ef9ef49a6efda50e201228
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Daikon
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: a7efcaa7224583949b33bec7df1e3131, type: 3}
+  - {fileID: 12800000, guid: 814d3c31afa1d7d4ebb495fde407964e, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
