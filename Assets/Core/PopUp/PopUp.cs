@@ -4,6 +4,7 @@ using Core.Singleton;
 using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
@@ -19,6 +20,8 @@ namespace Core.PopUp
         protected override void Awake()
         {
             base.Awake();
+
+            SceneManager.sceneLoaded += OnLoadScene;
 
             _popUpMap = new Dictionary<Type, IPopUp>();
             _popUpCache = new Dictionary<Type, IPopUp>();
@@ -36,12 +39,18 @@ namespace Core.PopUp
             }
         }
 
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnLoadScene;
+        }
+
         public static T Get<T>() where T : MonoBehaviour, IPopUp
         {
             var t = typeof(T);
             if (_popUpCache.TryGetValue(t, out var value))
             {
-                return (T)value;
+                if (value != null) 
+                    return (T)value;
             }
 
             if (!_popUpMap.TryGetValue(t, out value))
@@ -54,7 +63,7 @@ namespace Core.PopUp
             var prefab = (T)value;
             var popUp = Instantiate(prefab);
             popUp.gameObject.SetActive(false);
-            _popUpCache.Add(t, popUp);
+            _popUpCache[t] = popUp;
             return popUp;
         }
 
@@ -77,6 +86,19 @@ namespace Core.PopUp
             
             // Todo hide animation
             return DOTween.Sequence();
+        }
+        
+        public static Tween Hide(GameObject popUp)
+        {
+            popUp.gameObject.SetActive(false);
+            
+            // Todo hide animation
+            return DOTween.Sequence();
+        }
+
+        private void OnLoadScene(Scene scene, LoadSceneMode loadSceneMode)
+        {
+            _popUpCache.Clear();
         }
     }
 }
