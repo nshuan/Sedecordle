@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0f64f0c0f1f48be907d9238bd690d66, type: 3}
-  m_Name: ColorConst
+  m_Name: LightMode
   m_EditorClassIdentifier: 
+  colorMode: 0
+  backgroundColor: {r: 0.9716981, g: 0.9716981, b: 0.9716981, a: 1}
   activeLineColor: {r: 0.85882354, g: 0.8745098, b: 0.92156863, a: 1}
   pendingLineColor: {r: 0.9294118, g: 0.93725497, b: 0.9568628, a: 1}
   activeTextColor: {r: 0.3529412, g: 0.3882353, b: 0.4627451, a: 1}

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0f64f0c0f1f48be907d9238bd690d66, type: 3}
+  m_Name: DarkMode
+  m_EditorClassIdentifier: 
+  colorMode: 1
+  backgroundColor: {r: 0.07450981, g: 0.078431375, b: 0.10980392, a: 1}
+  activeLineColor: {r: 0.23529412, g: 0.24705882, b: 0.3372549, a: 1}
+  pendingLineColor: {r: 0.16470589, g: 0.17254902, b: 0.22745098, a: 1}
+  activeTextColor: {r: 1, g: 1, b: 1, a: 1}
+  passedTextColor: {r: 1, g: 1, b: 1, a: 1}
+  keyboardLetterColor: {r: 1, g: 1, b: 1, a: 1}
+  keyboardKeyColor: {r: 0.39607844, g: 0.40392157, b: 0.5019608, a: 1}
+  notExistColor: {r: 0.23921569, g: 0.2509804, b: 0.32941177, a: 1}
+  notPlaceColor: {r: 0.9529412, g: 0.7607843, b: 0.21568628, a: 1}
+  correctColor: {r: 0.4745098, g: 0.72156864, b: 0.31764707, a: 1}

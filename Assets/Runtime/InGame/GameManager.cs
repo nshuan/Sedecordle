@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core.DataHandler;
 using Core.Singleton;
 using DG.Tweening;
 using EasyButtons;
@@ -13,15 +14,16 @@ namespace Runtime.InGame
 {
     public class GameManager : MonoSingleton<GameManager>
     {
-        private const int NumberOfLetter = 5;
         private const int MaxTurn = 21;
         public const int NumberOfWords = 16;
+        private int NumberOfLetter => GameSettings.Load.hardness;
         
         [SerializeField] private BoardManager boardManager;
         [SerializeField] private WinLoseManager winLoseManager;
         public static IWordService WordService = new DictionaryWordService();
 
         public List<BoardEntity> BoardEntities => boardManager.BoardEntities;
+        public List<string> Targets { get; private set; }
         
         private Stack<KeyCode> _input;
         private int _currentTurn = 1;
@@ -95,9 +97,9 @@ namespace Runtime.InGame
         private void LoadGame(int numberOfLetter)
         {
             _currentTurn = 1;
-            var targetWords = WordService.GetRandomWords(numberOfLetter, 16);
+            Targets = WordService.GetRandomWords(numberOfLetter, 16);
             boardManager.BuildBoards(numberOfLetter);
-            boardManager.SetTargets(targetWords);
+            boardManager.SetTargets(Targets);
             OnLoadGame?.Invoke();
         }
 

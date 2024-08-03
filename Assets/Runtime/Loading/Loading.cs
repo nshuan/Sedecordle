@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using EasyButtons;
+using Runtime.Const;
 
 namespace Runtime.LoadingEffect
 {
@@ -18,7 +19,8 @@ namespace Runtime.LoadingEffect
         protected override void Awake()
         {
             base.Awake();
-            
+
+            loadingImage.SetColor(ColorConst.Default.activeLineColor);
             loadingImage.gameObject.SetActive(false);
         }
 

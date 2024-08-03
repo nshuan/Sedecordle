@@ -1,3 +1,4 @@
+using Runtime.Const;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,6 +37,7 @@ namespace Runtime.InGame.Board
         public void SetTitle(string value)
         {
             title.text = value;
+            title.SetColor(ColorConst.Default.activeTextColor);
         }
     }
 }
