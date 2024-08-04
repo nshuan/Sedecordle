@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Runtime.DarkMode
 {
+    [DefaultExecutionOrder(1000)]
     public class ColorEffector : MonoBehaviour
     {
         [SerializeField] private bool changeImmediately;
@@ -27,7 +28,10 @@ namespace Runtime.DarkMode
 
         private void OnEnable()
         {
-            DoChangeColor();
+            if (changeImmediately)
+                DoChangeColor().Complete();
+            else
+                DoChangeColor();
         }
 
         private void OnDestroy()

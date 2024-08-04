@@ -35,6 +35,7 @@ namespace Runtime.InGame.Board
         public void BuildBoard(int numberOfLetter)
         {
             _lineEntities = _lineCreator.CreateLines(numberOfLetter);
+            _lineEntities[0].IsLineActive = true;
         }
 
         public void SetTarget(string target)
@@ -66,16 +67,22 @@ namespace Runtime.InGame.Board
         {
             if (IsBoardComplete) return DOTween.Sequence();
             
-            return DoCheckWord(word).OnComplete(() =>
+            var result = WordChecker.Instance.CheckWord(word, Target);
+            
+            _lineEntities[_currentLine].LineMatch = result;
+            _lineEntities[_currentLine].IsLineActive = false;
+            _lineEntities[_currentLine + 1].IsLineActive = true;
+            
+            return DoCheckWord(result).OnComplete(() =>
             {
                 _currentLine += 1;
+                if (OnBoardChecks.ContainsKey(BoardId))
+                    OnBoardChecks[BoardId]?.Invoke(word, result);
             });
         }
         
-        private Tween DoCheckWord(KeyWord word)
+        private Tween DoCheckWord(List<CharMatch> result)
         {
-            var result = WordChecker.Instance.CheckWord(word, Target);
-
             DOTween.Kill(transform);
             var sequence = DOTween.Sequence(transform);
             var line = _lineEntities[_currentLine];
@@ -132,12 +139,6 @@ namespace Runtime.InGame.Board
             sequence.AppendCallback(() =>
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(lineRect);
-            });
-
-            sequence.AppendCallback(() =>
-            {
-                if (OnBoardChecks.ContainsKey(BoardId))
-                    OnBoardChecks[BoardId]?.Invoke(word, result);
             });
 
             return sequence;

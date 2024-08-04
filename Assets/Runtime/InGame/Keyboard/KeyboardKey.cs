@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Runtime.Const;
+using Runtime.DarkMode;
 using Runtime.InGame.Board;
 using Runtime.InGame.WordChecking;
 using Unity.VisualScripting;
@@ -11,19 +13,19 @@ using UnityEngine.UI;
 
 namespace Runtime.InGame.Keyboard
 {
-    public class KeyboardKey : MonoBehaviour, IPointerClickHandler
+    public class KeyboardKey : MonoBehaviour, IPointerClickHandler, IAffectedByDarkMode
     {
         public static event Action<KeyCode> OnVirtualKeyPressed;
 
         [SerializeField] private Text letterText;
-        [SerializeField] private Image letterImage;
+        [SerializeField] protected Image letterImage;
         [SerializeField] private KeyCode letter;
         [SerializeField] private Transform cover;
         private GridLayoutGroup _coverGrid;
         private RectTransform _coverRect;
 
         public KeyCode Letter => letter;
-        private List<KeyboardKeyLetterView> _previewCells;
+        private List<KeyboardKeyLetterView> _reviewCells;
         
         private void Awake()
         {
@@ -46,7 +48,7 @@ namespace Runtime.InGame.Keyboard
 
         public void SetupKey(int col, int row)
         {
-            _previewCells = new List<KeyboardKeyLetterView>();
+            _reviewCells = new List<KeyboardKeyLetterView>();
             foreach (Transform child in cover)
             {
                 Destroy(child.gameObject);
@@ -64,7 +66,7 @@ namespace Runtime.InGame.Keyboard
             var cellSize = new Vector2(coverSize.x / col, coverSize.y / row);
             // _coverGrid.cellSize = cellSize;
             
-            _previewCells = new List<KeyboardKeyLetterView>();
+            _reviewCells = new List<KeyboardKeyLetterView>();
             for (var i = 0; i < col * row; i++)
             {
                 var newPreviewCell = new GameObject("PreviewCell");
@@ -81,16 +83,16 @@ namespace Runtime.InGame.Keyboard
                 var script = newPreviewCell.AddComponent<KeyboardKeyLetterView>();
                 script.SetImage(image);
                 image.color = Color.clear;
-                _previewCells.Add(script);
+                _reviewCells.Add(script);
             }
             
             // Setup events
             var amount = BoardManager.BoardAmount;
             for (var i = 0; i < amount; i++)
             {
-                if (i >= _previewCells.Count) break;
+                if (i >= _reviewCells.Count) break;
 
-                var cell = _previewCells[i];
+                var cell = _reviewCells[i];
                 Action<KeyWord, List<CharMatch>> checkAction = (checkWord, match) =>
                 {
                     if (cell.CurrentValue == CharMatch.Correct) return;
@@ -111,10 +113,17 @@ namespace Runtime.InGame.Keyboard
         private void FixCells(KeyWord keyword, List<CharMatch> result)
         {
             if (!keyword.Contains(letter)) return;
-            foreach (var cell in _previewCells.Where(cell => cell.CurrentValue <= CharMatch.NotExist))
+            foreach (var cell in _reviewCells.Where(cell => cell.CurrentValue <= CharMatch.NotExist))
             {
                 cell.CurrentValue = CharMatch.NotExist;
             }
+        }
+
+        public virtual Tween DoChangeColorMode(ColorConst colorPalette)
+        {
+            return DOTween.Sequence(transform)
+                .Join(letterText.DOColor(colorPalette.keyboardLetterColor, 0.2f).SetEase(Ease.OutQuint))
+                .Join(letterImage.DOColor(colorPalette.keyboardKeyColor, 0.2f).SetEase(Ease.OutQuint));
         }
     }
 }

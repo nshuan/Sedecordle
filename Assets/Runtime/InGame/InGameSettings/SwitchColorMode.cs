@@ -1,13 +1,21 @@
 using System;
 using Runtime.Const;
+using Runtime.UIButtons;
 using UnityEngine;
 
 namespace Runtime.InGame.InGameSettings
 {
     public class SwitchColorMode : MonoBehaviour
     {
-        public static event Action onSwitchColorMode;
+        [SerializeField] private CheckBox checkBox;
         
+        public static event Action onSwitchColorMode;
+
+        private void OnEnable()
+        {
+            checkBox.SetCheck(GameSettings.Load.colorMode == ColorMode.Dark);
+        }
+
         public void DarkModeOn()
         {
             GameSettings.Load.colorMode = ColorMode.Dark;

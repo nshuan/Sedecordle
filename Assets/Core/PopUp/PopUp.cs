@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using Core.Singleton;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using Object = UnityEngine.Object;
 
 namespace Core.PopUp
 {
@@ -16,6 +13,9 @@ namespace Core.PopUp
 
         private static Dictionary<Type, IPopUp> _popUpMap;
         private static Dictionary<Type, IPopUp> _popUpCache;
+        private static Dictionary<Type, Canvas> _popupCanvasMap;
+
+        private static int _currentTopLayer = 10;
         
         protected override void Awake()
         {
@@ -25,6 +25,7 @@ namespace Core.PopUp
 
             _popUpMap = new Dictionary<Type, IPopUp>();
             _popUpCache = new Dictionary<Type, IPopUp>();
+            _popupCanvasMap = new Dictionary<Type, Canvas>();
             foreach (var prefab in popUpPrefabs)
             {
                 if (!prefab.TryGetComponent<IPopUp>(out var component))
@@ -36,6 +37,15 @@ namespace Core.PopUp
                 }
                 var t = component.GetType();
                 _popUpMap.Add(t, component);
+
+                if (!prefab.TryGetComponent<Canvas>(out var canvas))
+                {
+#if UNITY_EDITOR
+                    Debug.LogError("Prefab " + prefab.name + " must have canvas!");
+#endif
+                    continue;
+                }
+                _popupCanvasMap.Add(t, canvas);
             }
         }
 
@@ -74,6 +84,11 @@ namespace Core.PopUp
 
         public static Tween Show<T>(T popUp) where T : MonoBehaviour, IPopUp
         {
+            _currentTopLayer += 10;
+            var orderInLayer = _currentTopLayer;
+            var canvas = _popupCanvasMap[typeof(T)];
+            canvas.sortingOrder = orderInLayer;
+            
             popUp.gameObject.SetActive(true);
             
             // Todo show animation
@@ -83,6 +98,9 @@ namespace Core.PopUp
         public static Tween Hide<T>(T popUp) where T : MonoBehaviour, IPopUp
         {
             Release(popUp);
+            
+            var canvas = _popupCanvasMap[typeof(T)];
+            if (canvas.sortingOrder >= _currentTopLayer) _currentTopLayer = canvas.sortingOrder - 10;
             
             // Todo hide animation
             return DOTween.Sequence();

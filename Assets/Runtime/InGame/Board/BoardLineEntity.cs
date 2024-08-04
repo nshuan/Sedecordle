@@ -1,17 +1,23 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using EasyButtons;
 using Runtime.Const;
+using Runtime.DarkMode;
+using Runtime.InGame.WordChecking;
 
 namespace Runtime.InGame.Board
 {
     [RequireComponent(typeof(BoardCellCreator))]   
-    public class BoardLineEntity : MonoBehaviour
+    public class BoardLineEntity : MonoBehaviour, IAffectedByDarkMode
     {
         private BoardCellCreator _cellCreator;
 
+        public List<CharMatch> LineMatch { get; set; }
+        public bool IsLineActive { get; set; }
+        
         public Color LineColor
         {
             get
@@ -61,6 +67,55 @@ namespace Runtime.InGame.Board
             if (_currentCell >= CellEntities.Length) return;
 
             CellEntities[_currentCell].Delete();
+        }
+
+        public Tween DoChangeColorMode(ColorConst colorPalette)
+        {
+            var seq = DOTween.Sequence(transform);
+            
+            if (LineMatch == null)
+            {
+                if (!IsLineActive)
+                {
+                    foreach (var cell in CellEntities)
+                    {
+                        seq.Join(cell.CellImage.DOColor(colorPalette.pendingLineColor, 0.2f).SetEase(Ease.OutQuint));
+                    }
+                }
+                else
+                {
+                    foreach (var cell in CellEntities)
+                    {
+                        seq.Join(cell.CellImage.DOColor(colorPalette.activeLineColor, 0.2f).SetEase(Ease.OutQuint))
+                            .Join(cell.CellText.DOColor(colorPalette.activeTextColor, 0.2f).SetEase(Ease.OutQuint));
+                    }
+                }
+            }
+            else
+            {
+                for (var i = 0; i < LineMatch.Count; i++)
+                {
+                    seq.Join(
+                        CellEntities[i].CellText.DOColor(colorPalette.passedTextColor, 0.2f).SetEase(Ease.OutQuint));
+                    switch (LineMatch[i])
+                    {
+                        case CharMatch.Correct:
+                            seq.Join(CellEntities[i].CellImage.DOColor(colorPalette.correctColor, 0.2f)
+                                .SetEase(Ease.OutQuint));
+                            break;
+                        case CharMatch.NotPlace:
+                            seq.Join(CellEntities[i].CellImage.DOColor(colorPalette.notPlaceColor, 0.2f)
+                                .SetEase(Ease.OutQuint));
+                            break;
+                        default:
+                            seq.Join(CellEntities[i].CellImage.DOColor(colorPalette.notExistColor, 0.2f)
+                                .SetEase(Ease.OutQuint));
+                            break;
+                    }
+                }
+            }
+
+            return seq;
         }
     }
 }

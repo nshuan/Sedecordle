@@ -24,8 +24,6 @@ namespace Runtime.InGame
                 break;
             }
             
-            if (isWin) DoWin();
-            
             return isWin;
         }
 

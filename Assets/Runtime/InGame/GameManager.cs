@@ -107,6 +107,7 @@ namespace Runtime.InGame
         {
             // Check word
             InputManager.BlockInput();
+            BlockUI.Instance.Block();
             var inputWord = _input.ToKeyWord();
 #if UNITY_EDITOR
             Debug.Log("Turn ended! Checking word: " + inputWord);
@@ -123,7 +124,7 @@ namespace Runtime.InGame
             sequence.OnComplete(() =>
             {
                 var win = winLoseManager.CheckWin(BoardEntities);
-                if (win) return;
+                if (win) winLoseManager.DoWin();
 
                 if (_currentTurn > MaxTurn)
                 {
@@ -132,6 +133,7 @@ namespace Runtime.InGame
                 }
                 
                 InputManager.UnBlockInput();
+                BlockUI.Instance.UnBlock();
             });
         }
     }
