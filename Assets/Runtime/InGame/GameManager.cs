@@ -22,6 +22,7 @@ namespace Runtime.InGame
         [SerializeField] private WinLoseManager winLoseManager;
         public static IWordService WordService = new DictionaryWordService();
 
+        public BoardManager BoardManagerInstance => boardManager;
         public List<BoardEntity> BoardEntities => boardManager.BoardEntities;
         public List<string> Targets { get; private set; }
         

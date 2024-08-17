@@ -35,5 +35,11 @@ namespace Runtime.Home
         {
             Debug.Log(WordDictionary.WordsMap.Count);
         }
+
+        [Button]
+        private void FixDictionary()
+        {
+            WordDictionary.FixDictionary();
+        }
     }
 }

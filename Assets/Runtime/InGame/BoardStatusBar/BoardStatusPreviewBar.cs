@@ -41,8 +41,10 @@ namespace Runtime.InGame.BoardStatusBar
                 newCell.transform.SetParent(cellHolder);
                 newCell.transform.localScale = Vector3.one;
                 var newCellImage = newCell.AddComponent<Image>();
+                var newCellButton = newCell.AddComponent<Button>();
                 var newCellScript = newCell.AddComponent<BoardStatusCell>();
-                newCellScript.SetImage(newCellImage);
+                newCellScript.CellImage = newCellImage;
+                newCellScript.CellButton = newCellButton;
                 newCellScript.SetColor(Color.clear);
                 _boardStatusCells.Add(newCellScript);
             }
@@ -58,6 +60,11 @@ namespace Runtime.InGame.BoardStatusBar
                 if (i > _boardStatusCells.Count) break;
 
                 var cell = _boardStatusCells[i];
+                cell.CellBoardIndex = i;
+                cell.CellButton.onClick.AddListener(() =>
+                {
+                    GameManager.Instance.BoardManagerInstance.ScrollToBoard(cell.CellBoardIndex);
+                });
                 Action onBoardComplete = () =>
                 {
                     cell.SetColor(ColorConst.Default.correctColor);

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
 namespace Runtime.Vocabulary
@@ -31,6 +32,30 @@ namespace Runtime.Vocabulary
                 lowercasedKey.TryAdd(word.Key.ToLower(), word.Value);
             }
             return lowercasedKey;
+        }
+
+        public static void FixDictionary()
+        {
+            var json = File.ReadAllText(Path);
+            var dataDictionary = JsonConvert.DeserializeObject<Dictionary<string, WordData>>(json);
+            
+            var fixedDict = new Dictionary<string, WordData>();
+            
+            var pattern = @"[^\x00-\x7F]+"; // Unicode range for Emoticons
+            var onlyLetterPattern = @"^[a-zA-Z]+$";
+            foreach (var data in dataDictionary)
+            {
+                var fixedKey = Regex.Replace(data.Key, pattern, "");
+
+                if (Regex.IsMatch(fixedKey, onlyLetterPattern))
+                {
+                    data.Value.Word = fixedKey;
+                    fixedDict[fixedKey] = data.Value;
+                }
+            }
+
+            var save = JsonConvert.SerializeObject(fixedDict, Formatting.Indented);
+            File.WriteAllText("Assets/Resources/Data/FixedMiniDictionary.json", save);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -64,6 +65,17 @@ namespace Runtime.InGame.Board
                 
                 BoardEntities[i].SetTarget(targets[i]);
             }
+        }
+
+        public void ScrollToBoard(int boardIndex)
+        {
+            var currentNormalizeX = scroller.verticalNormalizedPosition;
+            
+            var groupIndex = boardIndex / 2;
+            var groupCount = (BoardEntities.Count + 1) / 2;
+            var groupNormalizeX = (float)(groupCount - groupIndex) / groupCount;
+            var duration = Mathf.Abs(groupNormalizeX - currentNormalizeX) * 0.6f;
+            scroller.DOVerticalNormalizedPos(groupNormalizeX, duration).SetEase(Ease.Linear);
         }
     }
 }

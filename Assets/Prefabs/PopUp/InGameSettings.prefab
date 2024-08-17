@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94da096781bb44a1b747459b5d1c0a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleOnClick: {x: 0.95, y: 0.95}
+  scaleOnClick: {x: 0.9, y: 0.9}
 --- !u!114 &245027586945257549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,7 +505,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 40
+  m_SortingOrder: 20
   m_TargetDisplay: 0
 --- !u!114 &8354359153606764363
 MonoBehaviour:
