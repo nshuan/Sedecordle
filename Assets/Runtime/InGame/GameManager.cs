@@ -30,13 +30,10 @@ namespace Runtime.InGame
         private int _currentTurn = 1;
 
         public static event Action OnLoadGame;
-        
-        protected override void Awake()
-        {
-            base.Awake();
 
-            _input = new Stack<KeyCode>();
-            LoadGame(NumberOfLetter);
+        private void Start()
+        {
+            LoadGame();
         }
 
         ~GameManager()
@@ -93,6 +90,12 @@ namespace Runtime.InGame
                 }
             }
         }
+
+        public void LoadGame()
+        {
+            _input = new Stack<KeyCode>();
+            LoadGame(NumberOfLetter);
+        }
         
         [Button]
         private void LoadGame(int numberOfLetter)
@@ -125,7 +128,10 @@ namespace Runtime.InGame
             sequence.OnComplete(() =>
             {
                 var win = winLoseManager.CheckWin(BoardEntities);
-                if (win) winLoseManager.DoWin();
+                if (win)
+                {
+                    winLoseManager.DoWin();
+                }
 
                 if (_currentTurn > MaxTurn)
                 {
@@ -137,5 +143,21 @@ namespace Runtime.InGame
                 BlockUI.Instance.UnBlock();
             });
         }
+
+#if UNITY_EDITOR
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                InputManager.BlockInput();
+                winLoseManager.DoWin();
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                InputManager.BlockInput();
+                winLoseManager.DoLose();
+            }
+        }
+#endif
     }
 }

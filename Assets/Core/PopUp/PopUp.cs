@@ -16,11 +16,14 @@ namespace Core.PopUp
         private static Dictionary<Type, Canvas> _popupCanvasMap;
 
         private static int _currentTopLayer = 10;
+        private static Camera _currentCamera;
         
         protected override void Awake()
         {
             base.Awake();
 
+            _currentCamera = Camera.main;
+            
             SceneManager.sceneLoaded += OnLoadScene;
 
             _popUpMap = new Dictionary<Type, IPopUp>();
@@ -74,6 +77,12 @@ namespace Core.PopUp
             var popUp = Instantiate(prefab);
             popUp.gameObject.SetActive(false);
             _popUpCache[t] = popUp;
+
+            if (popUp.TryGetComponent<Canvas>(out var popUpCanvas))
+            {
+                popUpCanvas.worldCamera = _currentCamera;
+            }
+            
             return popUp;
         }
 
@@ -116,6 +125,7 @@ namespace Core.PopUp
 
         private void OnLoadScene(Scene scene, LoadSceneMode loadSceneMode)
         {
+            _currentCamera = Camera.main;
             _popUpCache.Clear();
         }
     }

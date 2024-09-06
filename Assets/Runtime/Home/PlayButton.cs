@@ -29,17 +29,5 @@ namespace Runtime.Home
             Loading.Show(2f);
             Navigator.LoadScene("InGame");
         }
-
-        [Button]
-        private void LoadData()
-        {
-            Debug.Log(WordDictionary.WordsMap.Count);
-        }
-
-        [Button]
-        private void FixDictionary()
-        {
-            WordDictionary.FixDictionary();
-        }
     }
 }

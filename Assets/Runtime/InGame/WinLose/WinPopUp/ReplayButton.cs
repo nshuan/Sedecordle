@@ -1,3 +1,4 @@
+using Runtime.LoadingEffect;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,6 +8,7 @@ namespace Runtime.InGame.WinLose
     {
         public void OnPointerClick(PointerEventData eventData)
         {
+            Loading.Show(2f);
             Navigator.LoadScene("InGame");
         }
     }
