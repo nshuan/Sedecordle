@@ -1,15 +1,25 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Runtime.Const;
+using Runtime.DarkMode;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Runtime.LoadingEffect
 {
-    public class LoadingTextEffect : MonoLoadingEffect
+    public class LoadingTextEffect : MonoLoadingEffect, IAffectedByDarkMode
     {
         [SerializeField] private List<Text> characters = new List<Text>();
-        
+
+        private void Awake()
+        {
+            foreach (var letter in characters)
+            {
+                letter.SetColor(ColorConst.Default.iconColor);
+            }
+        }
+
         public override Tween DoEffect()
         {
             DOTween.Kill(transform);
@@ -47,6 +57,16 @@ namespace Runtime.LoadingEffect
             }
 
             return sequence;
+        }
+
+        public Tween DoChangeColorMode(ColorConst colorPalette)
+        {
+            foreach (var letter in characters)
+            {
+                letter.SetColor(colorPalette.iconColor);
+            }
+            
+            return DOTween.Sequence();
         }
     }
 }

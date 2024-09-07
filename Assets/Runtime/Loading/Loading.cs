@@ -23,6 +23,7 @@ namespace Runtime.LoadingEffect
         {
             base.Awake();
             
+            loadingImage.SetColor(ColorConst.Default.backgroundColor);
             loadingImage.gameObject.SetActive(false);
             _canvas = GetComponent<Canvas>();
         }
@@ -74,7 +75,7 @@ namespace Runtime.LoadingEffect
 
         public Tween DoChangeColorMode(ColorConst colorPalette)
         {
-            return loadingImage.DOColor(ColorConst.Default.activeLineColor, 0.2f).SetEase(Ease.OutQuint);
+            return loadingImage.DOColor(colorPalette.backgroundColor, 0.2f).SetEase(Ease.OutQuint);
         }
     }
 }
