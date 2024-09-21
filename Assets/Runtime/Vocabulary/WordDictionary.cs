@@ -2,29 +2,37 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace Runtime.Vocabulary
 {
     public static class WordDictionary
     {
-        private const string Path = "Assets/Resources/Data/MiniDictionary.json";
+        private const string Path = "Data/MiniDictionary";
         
         private static Dictionary<string, WordData> _wordsMap;
 
         public static Dictionary<string, WordData> WordsMap => _wordsMap;
-        
+
         static WordDictionary()
+        {
+            // Init();
+        }
+
+        public static void Init()
         {
             _wordsMap = new Dictionary<string, WordData>();
             _wordsMap = ParseDictionaryFromJson();
         }
-
+        
         private static Dictionary<string, WordData> ParseDictionaryFromJson()
         {
-            if (!File.Exists(Path)) return new Dictionary<string, WordData>();
+            var textAsset = Resources.Load<TextAsset>(Path);
+            if (textAsset == null) return new Dictionary<string, WordData>();
 
-            var json = File.ReadAllText(Path);
-            var dataDictionary = JsonConvert.DeserializeObject<Dictionary<string, WordData>>(json);
+            // var json = File.ReadAllText(Path);
+            var dataDictionary = JsonConvert.DeserializeObject<Dictionary<string, WordData>>(textAsset.text);
+            // var dataDictionary = JsonUtility.FromJson<Dictionary<string, WordData>>(textAsset.text);
 
             var lowercasedKey = new Dictionary<string, WordData>();
             foreach (var word in dataDictionary)

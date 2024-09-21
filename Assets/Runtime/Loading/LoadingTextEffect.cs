@@ -12,8 +12,15 @@ namespace Runtime.LoadingEffect
     {
         [SerializeField] private List<Text> characters = new List<Text>();
 
+        private static List<float> charsOriginY = new List<float>();
+        
         private void Awake()
         {
+            foreach (var c in characters)
+            {
+                charsOriginY.Add(c.transform.position.y);
+            }
+            
             foreach (var letter in characters)
             {
                 letter.SetColor(ColorConst.Default.iconColor);
@@ -35,10 +42,12 @@ namespace Runtime.LoadingEffect
             {
                 var character = characters[i];
                 var charSeq = DOTween.Sequence();
-                var charOriginalPos = character.transform.position;
+                var charOriginY = charsOriginY[i];
+                var characterPos = character.transform.position;
+                character.transform.position = new Vector3(characterPos.x, charOriginY, characterPos.z);
                 charSeq.AppendInterval((i + 1) * 0.2f)
                     .Append(character.transform.DOLocalMoveY(80f, 0.22f).SetEase(Ease.OutQuad).SetEase(Ease.InBack).SetRelative())
-                    .Append(character.transform.DOLocalMoveY(charOriginalPos.y, 0.16f).SetEase(Ease.InQuad).SetEase(Ease.OutBack));
+                    .Append(character.transform.DOLocalMoveY(charOriginY, 0.16f).SetEase(Ease.InQuad).SetEase(Ease.OutBack));
                 sequence.Join(charSeq);
             }
 
